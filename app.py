@@ -13,10 +13,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False #coiso
 app.secret_key = 'engsoftware' 
 api = Api(app)
 
-@app.before_first_request
-def create_tables():
-    db.create_all()
-
 api.add_resource(UserRegister , '/register')
 api.add_resource(UserLogin , '/login')
 api.add_resource(UserPassword, '/profile/change_password')
