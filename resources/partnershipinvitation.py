@@ -76,6 +76,75 @@ class InvitationAcceptance(Resource):
 
         return {'message' : 'Invalid input.'}, 403
 
+class InvitationReject(Resource):
+
+
+    parser = reqparse.RequestParser()
+    parser.add_argument('userId',
+        type = str,
+        required = True,
+        help = "This field cannot be left blank!"
+    )
+    parser.add_argument('tokenId',
+        type = str,
+        required = True,
+        help = "This field cannot be left blank!"
+    )
+    parser.add_argument('partnershipId',
+        type = int,
+        required = True,
+        help = "This field cannot be left blank!"
+    )
+
+
+    def post(self):
+        data = InvitationReject.parser.parse_args()
+        print("AA")
+
+        try:
+            user = UserModel.find_by_username(data['userId'])
+            partnership = PartnershipModel.find_by_id(data['partnershipId'])
+            print("BB")
+            if user:
+
+                if not partnership:
+                    return{'message' : "Partnership offer given does not exist!"}, 400
+                if user.userType != "provider":
+                    return {'message' : "You need to be a provider to reject partnerships offers!"}, 403
+
+                serviceprovider = ServiceProviderModel.find_by_username(data['userId'])
+
+
+                print("CC")
+                userToken = TokenModel.find_by_username(data['userId'])
+                if userToken:
+                    if userToken.tokenId == data['tokenId']:
+                        print("DD")
+                        partnership = PartnershipModel.find_by_id(data['partnershipId'])
+                        print("EE")
+                        if not partnership:
+                            return {"message" : "This partnership offer was not found."}, 400
+                        if partnership.serviceProviderId != serviceprovider.id:
+                            return {"message" : "You are not the provider of this partnership offer."}, 400
+
+                        if partnership.accepted == 0:
+                            return {"message" : "You already accepted this partnership offer!"}, 400
+
+                        print("FF")
+
+                        partnership.accepted = 0
+                        partnership.serviceProviderId = -1
+                        partnership.serviceProviderName = "none"
+                        partnership.save_to_db()
+
+                        return {'message' : 'Partnership invitation rejected.'}, 201
+
+        except:
+            return {"message":"An error occurred, if this continues please contact us."}, 500
+
+
+        return {'message' : 'Invalid input.'}, 403
+
 
 
 class PartnershipInvitation(Resource):

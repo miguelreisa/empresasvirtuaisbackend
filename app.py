@@ -5,7 +5,7 @@ from flask_restful import Api
 from resources.user import UserRegister, UserLogin, UserList, OrganizerList, ServiceProviderList,UserPassword
 from resources.event import Event
 from resources.eventlist import EventList
-from resources.partnershipinvitation import PartnershipInvitation,InvitationAcceptance
+from resources.partnershipinvitation import PartnershipInvitation,InvitationAcceptance,InvitationReject
 from resources.listinvitations import ListInvitations
 from resources.listproviders import ProviderList
 
@@ -27,6 +27,7 @@ api.add_resource(EventList, '/list_events') #has filters
 api.add_resource(PartnershipInvitation, '/partnershipinvitation')
 api.add_resource(ListInvitations, '/list_invitations/<int:providerId>')
 api.add_resource(InvitationAcceptance, '/acceptinvitation')
+api.add_resource(InvitationReject, '/rejectinvitation')
 api.add_resource(ProviderList, '/list_providers') #has filters
 
 if __name__ == '__main__':
