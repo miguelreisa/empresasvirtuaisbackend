@@ -1,6 +1,7 @@
 import os
 from flask import Flask
 from flask_restful import Api
+from flask_cors import CORS
 
 from resources.user import UserRegister, UserLogin, UserList, OrganizerList, ServiceProviderList,UserPassword
 from resources.event import Event
@@ -10,6 +11,7 @@ from resources.listinvitations import ListInvitations
 from resources.listproviders import ProviderList
 
 app = Flask(__name__)
+CORS(app) #necessario para requests (pelo menos no react)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///data.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = 'empresasvirtuais'
