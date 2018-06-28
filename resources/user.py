@@ -187,7 +187,7 @@ class UserRegister(Resource):
 
     def post(self):
         data = UserRegister.parser.parse_args()
-
+        print(data)
         if UserModel.find_by_username(data['username']):
             return {"message" : "User with that username already exists."}, 400
 
