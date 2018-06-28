@@ -194,6 +194,7 @@ class UserRegister(Resource):
         if data['userType'] == "normal" or data['userType'] == "organizer" or data['userType'] == "provider":
             if data['userType'] == "organizer":
                 data2 = UserRegister.parser2.parse_args()
+                print(data2)
                 findOrganizer = OrganizerModel.find_by_name(data2['enterpriseName'])
                 if findOrganizer:
                     return {"message" : "An organizer with that name already exists!"}, 400
@@ -203,6 +204,7 @@ class UserRegister(Resource):
                 organizer.save_to_db()
             elif data['userType'] == "provider":
                 data3 = UserRegister.parser3.parse_args()
+                print(data3)
                 findProvider = ServiceProviderModel.find_by_name(data3['enterpriseName'])
                 if findProvider:
                     return {"message" : "A provider with that name already exists!"}, 400
