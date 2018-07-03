@@ -190,6 +190,9 @@ class UserRegister(Resource):
         print(data)
         if UserModel.find_by_username(data['username']):
             return {"message" : "User with that username already exists."}, 400
+        
+        if len(data['password']) < 8:
+            return {"message" : "Your password needs to have atleast 8 characters."}, 400
 
         if data['userType'] == "normal" or data['userType'] == "organizer" or data['userType'] == "provider":
             if data['userType'] == "organizer":
